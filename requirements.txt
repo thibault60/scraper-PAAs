@@ -3,3 +3,4 @@ PyGithub
 serpapi
 pandas
 requests
+xlsxwriter
