@@ -1,7 +1,6 @@
-streamlit
-PyGithub
-serpapi
-pandas
-serpapi
-requests
-xlsxwriter
+streamlit==1.35.0
+PyGithub==1.59.1
+serpapi==2.0.0
+pandas==2.2.2
+requests==2.32.3
+xlsxwriter==3.2.0   # ou openpyxl>=3.1
