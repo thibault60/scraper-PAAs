@@ -1,12 +1,12 @@
-# Environnements virtuels
-venv/
+# Caches & artefacts Python
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
 
-# Secrets Streamlit
-.streamlit/secrets.toml
+# IDE
+.vscode/
+.idea/
 
-# Fichiers système
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
+# Variables d’environnement
+.env
