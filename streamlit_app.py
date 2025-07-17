@@ -1,10 +1,34 @@
 import streamlit as st
 import pandas as pd
 from github import Github  # veillez à avoir "PyGithub" dans requirements.txt
-from serpapi import GoogleSearch
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from io import BytesIO  # pour l'export XLSX
+
+# ────────────────────────────────────────────────────
+# 0. Vérification des dépendances externes
+# ────────────────────────────────────────────────────
+try:
+    from serpapi import GoogleSearch
+except ImportError:
+    st.error(
+        "❌ Le module **serpapi** est manquant. Ajoutez `serpapi` dans `requirements.txt` puis redéployez."
+    )
+    st.stop()
+
+# Test présence d'un moteur Excel (xlsxwriter ou openpyxl)
+try:
+    import xlsxwriter  # noqa: F401
+    EXCEL_ENGINE = "xlsxwriter"
+except ImportError:
+    try:
+        import openpyxl  # noqa: F401
+        EXCEL_ENGINE = "openpyxl"
+    except ImportError:
+        st.error(
+            "❌ Aucun moteur Excel trouvé. Ajoutez `xlsxwriter` ou `openpyxl` dans `requirements.txt`."
+        )
+        st.stop()
 
 # ────────────────────────────────────────────────────
 # 1. Gestion des secrets (.streamlit/secrets.toml)
@@ -141,7 +165,7 @@ if st.button("🕹️ Extraire les PAA"):
 
     # Téléchargement XLSX
     xlsx_buffer = BytesIO()
-    with pd.ExcelWriter(xlsx_buffer, engine="xlsxwriter") as writer:  # nécessite `xlsxwriter` dans requirements.txt
+    with pd.ExcelWriter(xlsx_buffer, engine=EXCEL_ENGINE) as writer:
         df_paa.to_excel(writer, index=False, sheet_name="PAA")
     xlsx_buffer.seek(0)
     st.download_button(
